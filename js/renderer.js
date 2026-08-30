@@ -34,8 +34,24 @@ class SimulationRenderer {
     this.showGraphOverlay = false;
     this.timeTick = 0;
 
+    this.resizeTimeout = null;
+    this.isActiveScreen = false;
+    this.animFrameId = null;
+
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => {
+      if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.resize(), 100);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.stopRenderLoop();
+      } else if (this.isActiveScreen) {
+        this.startRenderLoop();
+      }
+    });
+
     this.startRenderLoop();
   }
 
@@ -87,12 +103,31 @@ class SimulationRenderer {
   }
 
   startRenderLoop() {
+    if (this.animFrameId) return;
     const loop = () => {
-      this.update();
-      this.render();
-      requestAnimationFrame(loop);
+      if (!document.hidden && this.isActiveScreen) {
+        this.update();
+        this.render();
+      }
+      this.animFrameId = requestAnimationFrame(loop);
     };
-    requestAnimationFrame(loop);
+    this.animFrameId = requestAnimationFrame(loop);
+  }
+
+  stopRenderLoop() {
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+  }
+
+  setActiveScreen(active) {
+    this.isActiveScreen = active;
+    if (active && !document.hidden) {
+      this.startRenderLoop();
+    } else if (!active) {
+      this.stopRenderLoop();
+    }
   }
 
   update() {

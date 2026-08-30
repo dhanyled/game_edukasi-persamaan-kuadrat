@@ -37,12 +37,29 @@ class QuadraGame {
       const saved = localStorage.getItem('quadra_save_data');
       if (saved) {
         const parsed = JSON.parse(saved);
+        const sanitizeNumber = (val, defaultVal = 0) => (typeof val === 'number' && Number.isFinite(val) && val >= 0) ? Math.floor(val) : defaultVal;
+
+        const unlockedLevels = Array.isArray(parsed.unlockedLevels)
+          ? parsed.unlockedLevels.filter(lvl => Number.isInteger(lvl) && lvl >= 1 && lvl <= 100)
+          : [1];
+
+        const sanitizedStars = {};
+        if (parsed.levelStars && typeof parsed.levelStars === 'object') {
+          for (const k in parsed.levelStars) {
+            const keyNum = parseInt(k, 10);
+            const valNum = parseInt(parsed.levelStars[k], 10);
+            if (!isNaN(keyNum) && !isNaN(valNum)) {
+              sanitizedStars[keyNum] = Math.min(3, Math.max(0, valNum));
+            }
+          }
+        }
+
         this.playerState = {
-          score: typeof parsed.score === 'number' ? parsed.score : 0,
-          strategyScore: typeof parsed.strategyScore === 'number' ? parsed.strategyScore : 0,
-          unlockedLevels: (Array.isArray(parsed.unlockedLevels) && parsed.unlockedLevels.length > 0) ? parsed.unlockedLevels : [1],
-          levelStars: parsed.levelStars && typeof parsed.levelStars === 'object' ? parsed.levelStars : {},
-          fastSolverBadges: typeof parsed.fastSolverBadges === 'number' ? parsed.fastSolverBadges : 0
+          score: sanitizeNumber(parsed.score, 0),
+          strategyScore: sanitizeNumber(parsed.strategyScore, 0),
+          unlockedLevels: unlockedLevels.length > 0 ? unlockedLevels : [1],
+          levelStars: sanitizedStars,
+          fastSolverBadges: sanitizeNumber(parsed.fastSolverBadges, 0)
         };
       }
     } catch (e) {
@@ -368,6 +385,9 @@ class QuadraGame {
     const target = document.getElementById(`screen-${screenId}`);
     if (target) target.classList.add('active');
 
+    if (this.renderer) this.renderer.setActiveScreen(screenId === 'game');
+    if (this.sandbox) this.sandbox.setActiveScreen(screenId === 'sandbox');
+
     if (screenId === 'game') {
       this.setMobileViewMode('solve');
       if (this.renderer) setTimeout(() => this.renderer.resize(), 60);
@@ -413,22 +433,26 @@ class QuadraGame {
 
       const card = document.createElement('div');
       card.className = `level-card ${isUnlocked ? '' : 'locked'}`;
-      card.title = isUnlocked ? `Klik untuk memainkan ${tmpl.name}` : `Level ${tmpl.id} masih terkunci`;
+      const safeName = MathEngine.escapeHtml(tmpl.name);
+      const safeSubtitle = MathEngine.escapeHtml(tmpl.subtitle);
+      const safeMissionDesc = MathEngine.escapeHtml(tmpl.missionDesc);
+
+      card.title = isUnlocked ? `Klik untuk memainkan ${safeName}` : `Level ${tmpl.id} masih terkunci`;
       card.innerHTML = `
         <div class="level-card-top">
           <span class="level-badge">LVL 0${tmpl.id}</span>
           <span class="level-stars">${isUnlocked ? starsStr : '🔒 TERKUNCI'}</span>
         </div>
         <div class="level-title-wrap">
-          <div class="level-icon">${tmpl.icon}</div>
+          <div class="level-icon">${MathEngine.escapeHtml(tmpl.icon)}</div>
           <div class="level-info">
-            <h3>${tmpl.name}</h3>
-            <span>${tmpl.subtitle}</span>
+            <h3>${safeName}</h3>
+            <span>${safeSubtitle}</span>
           </div>
         </div>
-        <p class="level-desc">${tmpl.missionDesc}</p>
+        <p class="level-desc">${safeMissionDesc}</p>
         <div class="level-math-tags">
-          ${tmpl.tags.map(t => `<span class="math-tag">${t}</span>`).join('')}
+          ${tmpl.tags.map(t => `<span class="math-tag">${MathEngine.escapeHtml(t)}</span>`).join('')}
         </div>
       `;
 
@@ -465,10 +489,10 @@ class QuadraGame {
 
     // Update World Info in Canvas HUD
     const worldTitleEl = document.getElementById('env-world-title');
-    if (worldTitleEl) worldTitleEl.innerHTML = `<span>${level.icon}</span> ${level.name}`;
+    if (worldTitleEl) worldTitleEl.innerHTML = `<span>${MathEngine.escapeHtml(level.icon)}</span> ${MathEngine.escapeHtml(level.name)}`;
     
     const missionSubEl = document.getElementById('env-mission-subtitle');
-    if (missionSubEl) missionSubEl.innerHTML = level.subtitle;
+    if (missionSubEl) missionSubEl.innerText = level.subtitle;
 
     // Update Dialogue
     const avatarEl = document.getElementById('dialogue-npc-avatar');
@@ -744,7 +768,7 @@ class QuadraGame {
 
     const toast = document.createElement('div');
     toast.className = 'toast-item';
-    toast.innerHTML = `<span>🎮</span> <span>${message}</span>`;
+    toast.innerHTML = `<span>🎮</span> <span>${MathEngine.escapeHtml(message)}</span>`;
     container.appendChild(toast);
 
     setTimeout(() => {

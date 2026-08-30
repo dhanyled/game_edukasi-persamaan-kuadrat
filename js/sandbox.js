@@ -14,9 +14,25 @@ class QuadraticSandbox {
     this.activeTheme = 'graph'; // 'graph', 'rocket', 'sports', 'racing'
     this.animTime = 0;
 
+    this.resizeTimeout = null;
+    this.isActiveScreen = false;
+    this.animFrameId = null;
+
     this.initControls();
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => {
+      if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.resize(), 100);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.stopLoop();
+      } else if (this.isActiveScreen) {
+        this.startLoop();
+      }
+    });
+
     this.startLoop();
   }
 
@@ -100,12 +116,31 @@ class QuadraticSandbox {
   }
 
   startLoop() {
+    if (this.animFrameId) return;
     const loop = () => {
-      this.animTime += 0.03;
-      this.render();
-      requestAnimationFrame(loop);
+      if (!document.hidden && this.isActiveScreen) {
+        this.animTime += 0.03;
+        this.render();
+      }
+      this.animFrameId = requestAnimationFrame(loop);
     };
-    requestAnimationFrame(loop);
+    this.animFrameId = requestAnimationFrame(loop);
+  }
+
+  stopLoop() {
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+  }
+
+  setActiveScreen(active) {
+    this.isActiveScreen = active;
+    if (active && !document.hidden) {
+      this.startLoop();
+    } else if (!active) {
+      this.stopLoop();
+    }
   }
 
   render() {

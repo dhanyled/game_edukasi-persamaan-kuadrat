@@ -60,15 +60,24 @@ class Particle {
 }
 
 class ParticleSystem {
-  constructor() {
+  constructor(maxParticles = 300) {
     this.particles = [];
+    this.maxParticles = maxParticles;
   }
 
   update() {
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      if (!this.particles[i].update()) {
-        this.particles.splice(i, 1);
+    let writeIdx = 0;
+    for (let i = 0; i < this.particles.length; i++) {
+      if (this.particles[i].update()) {
+        this.particles[writeIdx++] = this.particles[i];
       }
+    }
+    this.particles.length = writeIdx;
+  }
+
+  addParticle(p) {
+    if (this.particles.length < this.maxParticles) {
+      this.particles.push(p);
     }
   }
 
@@ -90,7 +99,7 @@ class ParticleSystem {
       const color = colors[Math.floor(Math.random() * colors.length)];
       const size = Math.random() * 5 + 2;
       const life = Math.floor(Math.random() * 30) + 20;
-      this.particles.push(new Particle(
+      this.addParticle(new Particle(
         x, y,
         Math.cos(angle) * speed,
         Math.sin(angle) * speed,
@@ -105,7 +114,7 @@ class ParticleSystem {
       const vy = Math.random() * -1.5 - 0.5;
       const size = Math.random() * 6 + 4;
       const life = Math.floor(Math.random() * 25) + 20;
-      this.particles.push(new Particle(x, y, vx, vy, color, size, life, 'circle', -0.02));
+      this.addParticle(new Particle(x, y, vx, vy, color, size, life, 'circle', -0.02));
     }
   }
 
@@ -115,7 +124,7 @@ class ParticleSystem {
       const speed = Math.random() * 4 + 1;
       const size = Math.random() * 3 + 1;
       const life = Math.floor(Math.random() * 20) + 15;
-      this.particles.push(new Particle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, color, size, life, 'spark', 0.05));
+      this.addParticle(new Particle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, color, size, life, 'spark', 0.05));
     }
   }
 
@@ -125,7 +134,7 @@ class ParticleSystem {
       const vy = Math.random() * -6 - 2;
       const size = Math.random() * 4 + 3;
       const life = Math.floor(Math.random() * 40) + 30;
-      this.particles.push(new Particle(x, y, vx, vy, '#ffbe0b', size, life, 'circle', 0.25));
+      this.addParticle(new Particle(x, y, vx, vy, '#ffbe0b', size, life, 'circle', 0.25));
     }
   }
 
@@ -137,7 +146,7 @@ class ParticleSystem {
       const color = colors[Math.floor(Math.random() * colors.length)];
       const size = Math.random() * 6 + 3;
       const life = Math.floor(Math.random() * 60) + 40;
-      this.particles.push(new Particle(
+      this.addParticle(new Particle(
         x, y,
         Math.cos(angle) * speed,
         Math.sin(angle) * speed,
@@ -152,7 +161,7 @@ class ParticleSystem {
     for (let i = 0; i < 30; i++) {
       const angle = (i / 30) * Math.PI * 2;
       const speed = Math.random() * 5 + 3;
-      this.particles.push(new Particle(
+      this.addParticle(new Particle(
         x, y,
         Math.cos(angle) * speed,
         Math.sin(angle) * speed,
@@ -168,7 +177,7 @@ class ParticleSystem {
       const vy = (Math.random() - 0.5) * 1.2;
       const size = Math.random() * 3 + 1.5;
       const life = Math.floor(Math.random() * 15) + 10;
-      this.particles.push(new Particle(x, y, vx, vy, color, size, life, 'circle', 0));
+      this.addParticle(new Particle(x, y, vx, vy, color, size, life, 'circle', 0));
     }
   }
 
@@ -176,7 +185,7 @@ class ParticleSystem {
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2;
       const speed = 2.5;
-      this.particles.push(new Particle(
+      this.addParticle(new Particle(
         x, y,
         Math.cos(angle) * speed,
         Math.sin(angle) * speed,
@@ -194,7 +203,7 @@ class ParticleSystem {
       const vx = (Math.random() - 0.5) * 0.4;
       const colors = ['rgba(0,240,255,0.3)', 'rgba(255,190,11,0.25)', 'rgba(6,214,160,0.3)'];
       const color = colors[Math.floor(Math.random() * colors.length)];
-      this.particles.push(new Particle(x, y, vx, vy, color, Math.random() * 2 + 1, 90, 'circle', 0));
+      this.addParticle(new Particle(x, y, vx, vy, color, Math.random() * 2 + 1, 90, 'circle', 0));
     }
   }
 }

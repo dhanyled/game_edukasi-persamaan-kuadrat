@@ -96,8 +96,8 @@ class CodexSystem {
       const card = document.createElement('div');
       card.className = 'codex-article';
       card.innerHTML = `
-        <h3><span>${art.icon}</span> ${art.title}</h3>
-        <div class="codex-formula-tag">${art.formula}</div>
+        <h3><span>${MathEngine.escapeHtml(art.icon)}</span> ${MathEngine.escapeHtml(art.title)}</h3>
+        <div class="codex-formula-tag">${MathEngine.escapeHtml(art.formula)}</div>
         ${art.content}
       `;
       containerEl.appendChild(card);

@@ -6,6 +6,19 @@
 
 class MathEngine {
   /**
+   * Helper to escape raw text for HTML safety
+   */
+  static escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /**
    * Calculate discriminant D = b² - 4ac
    */
   static calcDiscriminant(a, b, c) {
