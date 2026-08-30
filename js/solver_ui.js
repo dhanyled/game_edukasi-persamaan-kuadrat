@@ -154,10 +154,10 @@ class SolverUI {
     const eq = level.equation;
 
     // Display equation banner
-    document.getElementById('solver-equation-text').innerHTML = eq.displayStr;
-    document.getElementById('solver-equation-target').innerHTML = `🎯 Target: ${eq.targetLabel}`;
-    document.getElementById('mission-title-text').innerHTML = level.mission.title;
-    document.getElementById('mission-desc-text').innerHTML = level.mission.desc;
+    document.getElementById('solver-equation-text').innerText = eq.displayStr;
+    document.getElementById('solver-equation-target').innerText = `🎯 Target: ${eq.targetLabel}`;
+    document.getElementById('mission-title-text').innerText = level.mission.title;
+    document.getElementById('mission-desc-text').innerText = level.mission.desc;
 
     // Run Scanner Tool
     this.runScanner(eq.a, eq.b, eq.c, level.problemType);

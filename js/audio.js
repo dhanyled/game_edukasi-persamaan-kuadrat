@@ -16,6 +16,18 @@ class SoundEngine {
     this.currentStep = 0;
     this.bpm = 120;
     this.isMuted = false;
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (this.ctx && this.ctx.state === 'running') {
+          this.ctx.suspend();
+        }
+      } else {
+        if (this.ctx && this.ctx.state === 'suspended' && this.soundEnabled) {
+          this.ctx.resume();
+        }
+      }
+    });
   }
 
   init() {

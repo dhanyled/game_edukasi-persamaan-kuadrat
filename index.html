@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self';">
   <title>QUADRA — The Quadratic World (256-Bit Ultra Math Simulation)</title>
   
   <!-- CSS Stylesheets -->
@@ -91,14 +92,14 @@
       <section id="screen-map" class="game-screen">
         <div class="map-container">
           <div class="map-header">
-            <button type="button" class="btn-nav-back" id="btn-map-to-title" onclick="window.gameApp && window.gameApp.switchScreen('title')">
+            <button type="button" class="btn-nav-back" id="btn-map-to-title">
               <span>🏠</span> Menu Utama
             </button>
             <div class="map-title-wrap">
               <h2 class="map-title">PETA DUNIA QUADRA</h2>
               <p class="map-subtitle">Pilih level dunia yang ingin kamu pulihkan. Klik kartu level yang terbuka untuk mulai!</p>
             </div>
-            <button class="btn-nav-back" id="btn-map-to-sandbox" onclick="window.gameApp && window.gameApp.switchScreen('sandbox')">
+            <button class="btn-nav-back" id="btn-map-to-sandbox">
               <span>🧪</span> Lab Sandbox
             </button>
           </div>
@@ -140,9 +141,9 @@
             </div>
 
             <div class="sim-controls">
-              <button type="button" class="btn-sim-control" id="btn-sim-reset" onclick="window.gameApp && window.gameApp.renderer && window.gameApp.renderer.resetSimulation(); window.gameApp.solverUI.resetInputFields();" title="Ulangi simulasi dari awal">🔄 Reset</button>
-              <button type="button" class="btn-sim-control" id="btn-sim-back-map" onclick="window.gameApp && window.gameApp.switchScreen('map')" title="Kembali ke Peta Dunia">🗺️ Peta</button>
-              <button type="button" class="btn-sim-control" id="btn-sim-to-menu" onclick="window.gameApp && window.gameApp.switchScreen('title')" title="Kembali ke Menu Utama">🏠 Menu</button>
+              <button type="button" class="btn-sim-control" id="btn-sim-reset" title="Ulangi simulasi dari awal">🔄 Reset</button>
+              <button type="button" class="btn-sim-control" id="btn-sim-back-map" title="Kembali ke Peta Dunia">🗺️ Peta</button>
+              <button type="button" class="btn-sim-control" id="btn-sim-to-menu" title="Kembali ke Menu Utama">🏠 Menu</button>
             </div>
           </div>
 
@@ -164,8 +165,8 @@
 
             <!-- Quick Solver Navigation Bar -->
             <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 2px;">
-              <button type="button" class="btn-nav-back" id="btn-solver-to-map" onclick="window.gameApp && window.gameApp.switchScreen('map')" title="Kembali ke Peta Dunia">🗺️ Peta Dunia</button>
-              <button type="button" class="btn-nav-back" id="btn-solver-to-menu" onclick="window.gameApp && window.gameApp.switchScreen('title')" title="Kembali ke Menu Utama">🏠 Menu Utama</button>
+              <button type="button" class="btn-nav-back" id="btn-solver-to-map" title="Kembali ke Peta Dunia">🗺️ Peta Dunia</button>
+              <button type="button" class="btn-nav-back" id="btn-solver-to-menu" title="Kembali ke Menu Utama">🏠 Menu Utama</button>
             </div>
 
             <!-- Mission Objective Brief -->
