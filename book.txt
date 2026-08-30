@@ -1,0 +1,456 @@
+Bisa. Kalau aku yang merancang, aku akan menjadikannya **bukan “game soal matematika”**, tapi **game petualangan yang kebetulan memakai persamaan kuadrat sebagai alat untuk memecahkan masalah**.
+
+## 🎮 Konsep: **QUADRA — The Quadratic World**
+
+**Genre:** puzzle/adventure edukasi
+**Platform:** browser, mobile + desktop
+**Visual:** retro **64-bit-inspired**, tetapi matematika tetap modern dan tajam
+**Target:** SMP akhir–SMA awal
+**Core loop:** **lihat masalah → pilih strategi → hitung → lihat akibatnya di dunia game**
+
+---
+
+# 1. Premis gamenya
+
+Pemain menjadi seorang **Problem Solver** di dunia bernama **Quadra**.
+
+Dunia ini mengalami gangguan: jembatan rusak, roket tidak bisa diluncurkan, stadion perlu direnovasi, bola tidak mencapai target, bisnis kota mengalami kerugian.
+
+Semua masalah itu dapat diselesaikan dengan matematika.
+
+Dan **persamaan kuadrat adalah salah satu “alat” utama pemain.**
+
+Jadi bukan:
+
+> “Hitung x² - 5x + 6 = 0.”
+
+Tetapi:
+
+> 🏀 **Bola harus masuk ring. Tentukan sudut/kecepatan yang membuat lintasannya tepat.**
+
+Kemudian game perlahan menunjukkan bahwa masalah tersebut dapat dimodelkan menjadi persamaan kuadrat.
+
+---
+
+# 2. Contoh dunia pertama — 🏀 SPORTS CITY
+
+Pemain masuk ke kota olahraga.
+
+Ada seorang karakter:
+
+> “Aku ingin bola melewati ring setinggi 3 meter. Bisa cari kapan bola mencapai ketinggian itu?”
+
+Game menampilkan lintasan:
+
+Kemudian:
+
+**Misi**
+
+> Bola memiliki tinggi:
+>
+> `h(t) = -5t² + 20t + 1`
+>
+> Kapan bola berada pada ketinggian **3 meter**?
+
+Pemain harus mengubah:
+
+`-5t² + 20t + 1 = 3`
+
+menjadi:
+
+`-5t² + 20t - 2 = 0`
+
+Nah, **di sinilah persamaan kuadrat masuk secara natural.**
+
+Setelah berhasil:
+
+> ✅ Bola melewati target!
+>
+> Kamu baru saja menggunakan **akar persamaan kuadrat untuk mencari waktu ketika benda mencapai ketinggian tertentu.**
+
+---
+
+# 3. Dunia kedua — 🏗️ BUILDING CITY
+
+Di sini persamaan kuadrat dipakai untuk **ukuran dan desain**.
+
+Misalnya pemain mendapat tanah berbentuk persegi panjang.
+
+> Luas tanah = 96 m²
+> Panjang = 4 meter lebih besar daripada lebar.
+>
+> Berapa panjang dan lebarnya?
+
+Misalkan lebar = `x`.
+
+Maka:
+
+`x(x + 4) = 96`
+
+→
+
+`x² + 4x - 96 = 0`
+
+Pemain menyelesaikan persamaan.
+
+Hasilnya:
+
+> Lebar = 8 m
+> Panjang = 12 m
+
+Kemudian **gedung benar-benar dibangun di dalam game**.
+
+Jadi hasil matematika bukan sekadar angka.
+
+**Jawaban pemain mengubah dunia game.**
+
+---
+
+# 4. Dunia ketiga — 🚀 SPACE CENTER
+
+Ini bisa menjadi salah satu level paling keren.
+
+Roket diluncurkan.
+
+Game memberikan:
+
+> `h(t) = -5t² + 80t + 2`
+
+Misi:
+
+### “Kapan roket kembali ke tanah?”
+
+Pemain harus mencari:
+
+`h(t) = 0`
+
+Kemudian game menjalankan animasi roket berdasarkan jawabannya.
+
+Kalau salah:
+
+🚀💥 roket jatuh terlalu cepat.
+
+Kalau benar:
+
+🚀✨ roket mencapai lintasan yang benar.
+
+Setelah itu game menjelaskan:
+
+> **Akar persamaan = waktu ketika ketinggian roket menjadi 0.**
+
+Dengan begitu konsep **akar** terasa masuk akal.
+
+---
+
+# 5. Dunia keempat — 💰 BUSINESS CITY
+
+Ini menurutku penting karena menunjukkan bahwa matematika juga dipakai untuk **mengambil keputusan**.
+
+Misalnya:
+
+> Harga tiket saat ini Rp20.000.
+>
+> Jika harga dinaikkan, jumlah pembeli turun.
+>
+> Game memberikan model keuntungan:
+
+`P(x) = -2x² + 80x + 500`
+
+Misi:
+
+> **Cari harga/strategi yang menghasilkan keuntungan maksimum.**
+
+Di sini pemain tidak cuma belajar akar persamaan.
+
+Mereka mulai memahami:
+
+### persamaan → grafik → maksimum/minimum → keputusan
+
+Dan parabola menjadi sesuatu yang **punya makna nyata**.
+
+---
+
+# 6. Dunia kelima — 🏎️ RACING CITY
+
+Game membuat lintasan mobil.
+
+Pemain harus menentukan apakah mobil bisa melewati sebuah gap.
+
+Misalnya lintasan lompatan dimodelkan dengan parabola.
+
+Pemain diberi:
+
+* kecepatan,
+* posisi awal,
+* tinggi platform,
+* jarak platform tujuan.
+
+Kemudian harus mencari titik ketika parabola bertemu platform.
+
+**Akar persamaan = lokasi/waktu tertentu dalam lintasan.**
+
+Kalau benar:
+
+🏎️💨 **LANDING!**
+
+Kalau salah:
+
+🏎️💥
+
+Ini membuat persamaan kuadrat terasa seperti **physics engine sederhana**.
+
+---
+
+# 7. Dunia keenam — 🏟️ STADIUM
+
+Nah, di sini kita mulai masuk ke **nilai maksimum/minimum**.
+
+Misalnya atap stadion berbentuk parabola.
+
+Pemain harus menentukan:
+
+> “Berapa tinggi maksimum atap?”
+
+Game menunjukkan:
+
+`y = -x² + 12x + 5`
+
+Pemain mencari **vertex**.
+
+Hasilnya menjadi:
+
+> 🏟️ Tinggi maksimum = ...
+
+Kemudian desain stadion berubah mengikuti jawaban.
+
+Di level ini pemain belajar bahwa parabola tidak cuma punya **akar**, tetapi juga **titik maksimum/minimum**.
+
+---
+
+# 8. Yang paling penting: game mengajarkan “cara cepat”
+
+Ini yang akan membuat game-nya berbeda dari aplikasi latihan matematika biasa.
+
+Misalnya soal:
+
+`x² - 7x + 12 = 0`
+
+Game tidak langsung memaksa rumus ABC.
+
+Muncul:
+
+> 🧠 **SCAN THE EQUATION**
+>
+> Pola terdeteksi:
+>
+> `x² + bx + c`
+>
+> Coba **FACTOR MODE**.
+
+Kemudian:
+
+> Cari dua angka:
+>
+> `? × ? = 12`
+>
+> `? + ? = -7`
+
+Pemain memasukkan:
+
+`-3` dan `-4`
+
+Game:
+
+> ⚡ **FAST SOLVE!**
+>
+> `(x - 3)(x - 4) = 0`
+>
+> `x = 3 atau x = 4`
+
+Jadi game mengajarkan **kapan suatu metode lebih efisien**.
+
+---
+
+# 9. Tapi kalau soal tidak mudah difaktorkan?
+
+Misalnya:
+
+`3x² + 7x - 5 = 0`
+
+Game mendeteksi:
+
+> 🔎 Factorization difficulty: HIGH
+>
+> ⚡ Recommended method:
+> **QUADRATIC FORMULA**
+
+Lalu pemain bisa membuka:
+
+genui{"learning_viz":{"type_id":"QUADRATIC_FORMULA","locale_override":"id-ID"}}
+
+Dengan demikian pemain belajar satu kemampuan yang sangat penting:
+
+> **“Jangan cuma tahu rumus. Tahu kapan menggunakan rumus tersebut.”**
+
+---
+
+# 10. Sistem progression
+
+Aku akan membuat progression seperti game RPG:
+
+```text
+LEVEL 1
+🌱 Quadratic Village
+│
+├── Mengenali bentuk ax² + bx + c
+├── Akar
+└── Faktorisasi sederhana
+       ↓
+LEVEL 2
+🏀 Sports City
+│
+├── Persamaan dari masalah nyata
+├── Grafik parabola
+└── Akar sebagai waktu/posisi
+       ↓
+LEVEL 3
+🏗️ Building City
+│
+├── Membentuk persamaan
+└── Dimensi & luas
+       ↓
+LEVEL 4
+🚀 Space Center
+│
+├── Rumus ABC
+├── Diskriminan
+└── Interpretasi akar
+       ↓
+LEVEL 5
+💰 Business City
+│
+├── Maksimum
+└── Minimum
+       ↓
+LEVEL 6
+🏎️ Racing City
+│
+├── Modeling
+└── Physics
+```
+
+---
+
+# 11. Sistem reward
+
+Bukan cuma:
+
+**+10 poin karena benar.**
+
+Tetapi:
+
+### 🧠 Strategy Score
+
+Misalnya:
+
+**Soal:** `x² - 9x + 20 = 0`
+
+Pemain menggunakan rumus ABC.
+
+Game:
+
+> ✅ Jawaban benar
+> ⚠️ Tapi ada metode lebih cepat!
+>
+> **Pattern detected → Factorization**
+>
+> Bonus strategi: `+0`
+>
+> Coba lagi untuk mendapatkan ⚡ **FAST SOLVER BONUS**
+
+Jadi game memberi penghargaan kepada pemain yang **cerdas memilih metode**, bukan cuma yang bisa menghitung.
+
+---
+
+# 12. Implementasi dunia nyata yang bisa dimasukkan
+
+| Dunia            | Persamaan kuadrat digunakan untuk |
+| ---------------- | --------------------------------- |
+| 🏀 Sports        | Lintasan bola                     |
+| 🚀 Space         | Ketinggian & waktu                |
+| 🏗️ Construction | Ukuran/luas                       |
+| 🏟️ Architecture | Bentuk parabola & tinggi maksimum |
+| 🏎️ Racing       | Lintasan kendaraan                |
+| 💰 Business      | Optimasi keuntungan               |
+| 🌉 Engineering   | Desain struktur                   |
+| 🌊 Physics       | Gerak benda                       |
+| 🎆 Entertainment | Lintasan proyektil                |
+| 📡 Technology    | Pemodelan hubungan kuadratik      |
+
+Tidak semuanya harus dibuat **100% realistis secara fisika**. Yang penting game secara eksplisit memberi tahu:
+
+> **“Dalam kasus ini, model sederhananya menggunakan persamaan kuadrat.”**
+
+Itu membuat pemain memahami **kapan matematika tersebut berguna**.
+
+---
+
+# 13. Tampilan yang aku bayangkan
+
+Bukan UI seperti Google Form.
+
+Lebih seperti:
+
+```text
+╔══════════════════════════════════════════╗
+║  🌎 QUADRA WORLD              LVL 08     ║
+║                                          ║
+║       🏀                                  ║
+║          ╲                                ║
+║           ╲       🟡 RING                 ║
+║            ╲    ╭─────╮                  ║
+║             ╲  ╱       ╲                 ║
+║              ╲╱         ╲                ║
+║                                          ║
+║  MISSION                                  ║
+║  Make the ball hit the ring.             ║
+║                                          ║
+║  h(t) = -5t² + 20t + 1                  ║
+║                                          ║
+║  Target height: 3m                       ║
+║                                          ║
+║  Choose your strategy:                   ║
+║                                          ║
+║  [ FACTOR ] [ ABC ] [ GRAPH ]            ║
+║                                          ║
+║              ⏱ 24s                       ║
+╚══════════════════════════════════════════╝
+```
+
+**64-bit-inspired** dipakai untuk dunia, karakter, kendaraan, efek, dan environment.
+
+Sedangkan persamaan, grafik, dan penjelasan dibuat **high-resolution dan clean**, supaya sisi edukasinya tidak terganggu.
+
+---
+
+## Intinya
+
+Aku akan memosisikan game ini sebagai:
+
+> **“Minecraft/Roblox-style problem solving, tetapi alat utamanya matematika.”**
+
+Bukan:
+
+> “Ini 100 soal persamaan kuadrat yang dibuat jadi game.”
+
+Perbedaan itu besar.
+
+Pemain harus merasa:
+
+**“Gue perlu menghitung ini supaya roketnya berhasil.”**
+
+bukan:
+
+**“Gue harus mengerjakan PR matematika sebelum boleh main.”**
+
+Dan untuk browser, versi pertamanya sebenarnya bisa dibuat cukup ringan dengan **HTML + CSS + JavaScript**, kemudian physics, animasi, progression, dan procedural question generator ditambahkan bertahap.

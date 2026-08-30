@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QUADRA — The Quadratic World (256-Bit Ultra Math Simulation)</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/retro-ui.css">
+</head>
+<body>
+
+  <!-- 256-Bit CRT Scanlines & Cyber-Hologram Screen Shader Overlay -->
+  <div id="crt-screen-overlay" class="crt-overlay"></div>
+
+  <!-- Master Application Container -->
+  <div id="app-container">
+
+    <!-- Top Navigation & Status Bar -->
+    <header id="top-bar">
+      <div class="logo-badge" id="nav-logo" title="Klik untuk kembali ke Menu Utama">
+        <span class="logo-icon">🪐</span>
+        <div>
+          <span class="logo-text">QUADRA</span>
+        </div>
+        <span class="logo-sub">256-BIT</span>
+      </div>
+
+      <div class="header-status-group">
+        <div class="stat-pill" title="Total Poin Akumulasi Petualangan">
+          <span class="icon">⭐</span>
+          <span>SKOR:</span>
+          <span class="val" id="hud-player-score">0</span>
+        </div>
+        <div class="stat-pill" title="Bonus Pilihan Strategi Tercepat (Fast Solver)">
+          <span class="icon">⚡</span>
+          <span>FAST SOLVER:</span>
+          <span class="val" id="hud-strategy-badges">0</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button class="btn-icon-top" id="nav-map-btn" title="Buka Peta Dunia (World Map)">🗺️</button>
+        <button class="btn-icon-top" id="nav-sandbox-btn" title="Buka Lab Sandbox Parabola">🧪</button>
+        <button class="btn-icon-top" id="nav-codex-btn" title="Buka Buku Panduan (Quadra Codex)">📖</button>
+        <button class="btn-icon-top" id="btn-toggle-sfx" title="Nyalakan / Matikan Suara Efek (SFX)">🔊</button>
+        <button class="btn-icon-top" id="btn-toggle-music" title="Nyalakan / Matikan Musik Synthesizer">🎵</button>
+        <button class="btn-icon-top" id="btn-toggle-crt" title="Filter Layar Cyber Shader 256-Bit">📺</button>
+      </div>
+    </header>
+
+    <!-- Main Viewport containing Game Screens -->
+    <main id="main-viewport">
+
+      <!-- ====================================================================
+           SCREEN 1: TITLE SCREEN / MAIN MENU
+           ==================================================================== -->
+      <section id="screen-title" class="game-screen active">
+        <div class="title-hero">
+          <div class="title-badge">⚡ 256-BIT ULTRA HIGH-FIDELITY MATH SIMULATOR</div>
+          <h1 class="title-main-h1">QUADRA<br><span style="font-size: 0.6em; letter-spacing: 4px; color: #00f0ff;">THE QUADRATIC WORLD</span></h1>
+          <p class="title-tagline">
+            Dunia Quadra mengalami kekacauan: roket gagal mengorbit, stadion belum beratapkan kubah, jembatan retak, dan mobil akrobat terjebak di jurang! 
+            Gunakan <strong>kekuatan analitik persamaan kuadrat</strong> sebagai alat utamamu untuk memecahkan masalah dunia nyata.
+          </p>
+
+          <div class="title-btn-group">
+            <button class="btn-64 btn-64-primary" id="btn-play-campaign" title="Mulai petualangan 7 level dunia Quadra">
+              <span>🚀</span> MULAI PETUALANGAN
+            </button>
+            <button class="btn-64 btn-64-secondary" id="btn-play-quick" title="Tantangan cepat dengan persamaan acak">
+              <span>⚡</span> TANTANGAN CEPAT
+            </button>
+          </div>
+
+          <div class="title-btn-group" style="margin-top: 10px;">
+            <button class="btn-64 btn-64-gold" id="btn-open-sandbox-main" title="Eksperimen kurva parabola interaktif">
+              <span>🧪</span> LAB SANDBOX PARABOLA
+            </button>
+            <button class="btn-64 btn-64-ghost" id="btn-open-codex-main" title="Buka ensiklopedia matematika & rumus">
+              <span>📖</span> QUADRA CODEX
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 2: WORLD MAP / LEVEL SELECTOR
+           ==================================================================== -->
+      <section id="screen-map" class="game-screen">
+        <div class="map-container">
+          <div class="map-header">
+            <button type="button" class="btn-nav-back" id="btn-map-to-title" onclick="window.gameApp && window.gameApp.switchScreen('title')">
+              <span>🏠</span> Menu Utama
+            </button>
+            <div class="map-title-wrap">
+              <h2 class="map-title">PETA DUNIA QUADRA</h2>
+              <p class="map-subtitle">Pilih level dunia yang ingin kamu pulihkan. Klik kartu level yang terbuka untuk mulai!</p>
+            </div>
+            <button class="btn-nav-back" id="btn-map-to-sandbox" onclick="window.gameApp && window.gameApp.switchScreen('sandbox')">
+              <span>🧪</span> Lab Sandbox
+            </button>
+          </div>
+
+          <div class="map-grid" id="world-map-grid">
+            <!-- 7 Level cards generated dynamically by js/game.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 3: MAIN GAMEPLAY & PROBLEM SOLVER
+           ==================================================================== -->
+      <section id="screen-game" class="game-screen">
+        
+        <!-- Mobile Tab Switcher (Visible only on mobile screen <= 860px) -->
+        <div class="mobile-view-tabs" id="mobile-tabs-bar">
+          <button class="btn-mobile-tab active" id="tab-mobile-view-solve">
+            <span>✍️</span> PAPAN HITUNG & STRATEGI
+          </button>
+          <button class="btn-mobile-tab" id="tab-mobile-view-sim">
+            <span>🎮</span> ARENA SIMULASI FISIKA
+          </button>
+        </div>
+
+        <!-- Left: 256-Bit Canvas Simulation Viewport -->
+        <div class="game-viewport">
+          <canvas id="simulation-canvas"></canvas>
+
+          <!-- Top Overlay HUD on Canvas -->
+          <div class="canvas-overlay-ui">
+            <div class="env-status-card">
+              <div class="env-world-name" id="env-world-title">
+                <span>🌱</span> Quadratic Village
+              </div>
+              <div class="env-mission-snippet" id="env-mission-subtitle">
+                Level 1: Pengenalan Bentuk & Akar
+              </div>
+            </div>
+
+            <div class="sim-controls">
+              <button type="button" class="btn-sim-control" id="btn-sim-reset" onclick="window.gameApp && window.gameApp.renderer && window.gameApp.renderer.resetSimulation(); window.gameApp.solverUI.resetInputFields();" title="Ulangi simulasi dari awal">🔄 Reset</button>
+              <button type="button" class="btn-sim-control" id="btn-sim-back-map" onclick="window.gameApp && window.gameApp.switchScreen('map')" title="Kembali ke Peta Dunia">🗺️ Peta</button>
+              <button type="button" class="btn-sim-control" id="btn-sim-to-menu" onclick="window.gameApp && window.gameApp.switchScreen('title')" title="Kembali ke Menu Utama">🏠 Menu</button>
+            </div>
+          </div>
+
+          <!-- Bottom Dialogue & NPC Bubble on Canvas -->
+          <div class="canvas-hud-bottom">
+            <div class="dialogue-box" id="dialogue-bubble">
+              <div class="dialogue-avatar" id="dialogue-npc-avatar">🧙‍♂️</div>
+              <div class="dialogue-content">
+                <h4 id="dialogue-npc-name">Elder Al-Khwarizmi</h4>
+                <p id="dialogue-npc-text">Selamat datang di Quadra! Kristal pelindung desa memerlukan kalibrasi akar persamaan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Problem Solver & Strategy Console -->
+        <div class="game-solver-panel">
+          <div class="solver-inner">
+
+            <!-- Quick Solver Navigation Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 2px;">
+              <button type="button" class="btn-nav-back" id="btn-solver-to-map" onclick="window.gameApp && window.gameApp.switchScreen('map')" title="Kembali ke Peta Dunia">🗺️ Peta Dunia</button>
+              <button type="button" class="btn-nav-back" id="btn-solver-to-menu" onclick="window.gameApp && window.gameApp.switchScreen('title')" title="Kembali ke Menu Utama">🏠 Menu Utama</button>
+            </div>
+
+            <!-- Mission Objective Brief -->
+            <div class="mission-card">
+              <div class="mission-header">
+                <span class="mission-title" id="mission-title-text">🎯 Misi Mendaratkan Bola</span>
+              </div>
+              <p class="mission-desc" id="mission-desc-text">
+                Ketinggian bola dimodelkan oleh fungsi kuadrat. Tentukan waktu saat bola mencapai ring target!
+              </p>
+            </div>
+
+            <!-- Math Equation Display Box with Randomize Option -->
+            <div class="equation-display-box">
+              <div class="equation-label-row">
+                <span class="equation-label">MODEL PERSAMAAN KUADRAT</span>
+                <button class="btn-randomize-eq" id="btn-randomize-level-eq" title="Klik untuk mengacak soal baru dengan akar bilangan bulat!">
+                  <span>🎲</span> Acak Soal Baru
+                </button>
+              </div>
+              <div class="equation-formula" id="solver-equation-text">x² - 7x + 12 = 0</div>
+              <div class="equation-target-info" id="solver-equation-target">🎯 Target: Akar frekuensi kristal energi</div>
+            </div>
+
+            <!-- 256-Bit Advanced Mathematical Telemetry Widget -->
+            <div class="telemetry-widget" id="solver-telemetry-box">
+              <div class="telemetry-header">
+                <div class="telemetry-title">
+                  <span class="pulse-dot"></span>
+                  <span>TELEMETRI FISIKA & STATISTIK 256-BIT</span>
+                </div>
+                <span class="telemetry-r2-badge" id="tel-r2-badge">R² = 1.000 (Exact Fit)</span>
+              </div>
+              <div class="telemetry-grid">
+                <div class="telemetry-cell">
+                  <span class="tel-label">Titik Fokus Optik (F):</span>
+                  <span class="tel-val" id="tel-focal-val">F(3.50, -0.25)</span>
+                </div>
+                <div class="telemetry-cell">
+                  <span class="tel-label">Kelengkungan (κ):</span>
+                  <span class="tel-val" id="tel-curvature-val">κ = 2.000 rad/m</span>
+                </div>
+                <div class="telemetry-cell">
+                  <span class="tel-label">Garis Direktris:</span>
+                  <span class="tel-val" id="tel-directrix-val">y = -0.75</span>
+                </div>
+                <div class="telemetry-cell">
+                  <span class="tel-label">Gradien Diferensial:</span>
+                  <span class="tel-val" id="tel-derivative-val">2x - 7 = 0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Equation Scanner AI Widget -->
+            <div class="scanner-widget">
+              <div class="scanner-header">
+                <span>🧠 SCANNER PERSAMAAN</span>
+                <span style="color: var(--primary-gold);">QUADRA AI 256-BIT</span>
+              </div>
+              <div class="scanner-body">
+                <span id="scanner-badge" class="scanner-badge factor">⚡ FACTOR MODE (REKOMENDASI)</span>
+                <p id="scanner-reason" style="margin-top: 4px;">Pola terdeteksi: x² + bx + c. Gunakan faktorisasi cepat untuk skor strategi maksimal!</p>
+              </div>
+            </div>
+
+            <!-- Strategy Picker Selector -->
+            <div class="strategy-picker-section">
+              <h4>
+                <span>PILIH STRATEGI PENYELESAIAN (KLIK SALAH SATU):</span>
+                <span class="strategy-timer">⚡ STRATEGY SCORE</span>
+              </h4>
+              <div class="strategy-tabs">
+                <button class="btn-strategy-tab active" data-strategy="factor" title="Gunakan faktorisasi mencari perkalian = c dan jumlah = b">
+                  <span class="tab-icon">⚡</span>
+                  <span>FAKTORISASI</span>
+                </button>
+                <button class="btn-strategy-tab" data-strategy="abc" title="Gunakan rumus universal x = (-b ± √D) / 2a">
+                  <span class="tab-icon">📐</span>
+                  <span>RUMUS ABC</span>
+                </button>
+                <button class="btn-strategy-tab" data-strategy="vertex" title="Gunakan rumus titik puncak x = -b/(2a) untuk laba/tinggi maksimum">
+                  <span class="tab-icon">📈</span>
+                  <span>PUNCAK / VERTEX</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 1. Factor Mode Workspace -->
+            <div id="workspace-factor" class="solver-workspace active">
+              <div class="step-box">
+                <div class="input-target-indicator factor">✍️ ISI JAWABAN PADA KOTAK DI BAWAH:</div>
+                <p>Cari dua angka <code>p</code> dan <code>q</code> di mana: <strong>p × q = c</strong> dan <strong>p + q = b</strong>. Ketik angka atau gunakan tombol <strong>[-] [+]</strong>:</p>
+              </div>
+
+              <div class="factor-inputs-row">
+                <span>( x</span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="factor-p" data-dir="-1" title="Kurangi 1">-</button>
+                  <input type="number" step="any" id="factor-p" class="math-input" placeholder="p" inputmode="decimal" title="Ketik angka p di sini">
+                  <button type="button" class="stepper-btn" data-target="factor-p" data-dir="1" title="Tambah 1">+</button>
+                </div>
+                <span>) ( x</span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="factor-q" data-dir="-1" title="Kurangi 1">-</button>
+                  <input type="number" step="any" id="factor-q" class="math-input" placeholder="q" inputmode="decimal" title="Ketik angka q di sini">
+                  <button type="button" class="stepper-btn" data-target="factor-q" data-dir="1" title="Tambah 1">+</button>
+                </div>
+                <span>) = 0</span>
+              </div>
+            </div>
+
+            <!-- 2. ABC Formula Workspace -->
+            <div id="workspace-abc" class="solver-workspace">
+              <div class="step-box">
+                <div class="input-target-indicator info">🔒 NILAI DIKETAHUI DARI SOAL (OTOMATIS):</div>
+                <div class="abc-step-grid">
+                  <div class="abc-input-card">
+                    <span>KOEF a</span>
+                    <input type="number" step="any" id="abc-input-a" readonly title="Koefisien a otomatis dari soal">
+                  </div>
+                  <div class="abc-input-card">
+                    <span>KOEF b</span>
+                    <input type="number" step="any" id="abc-input-b" readonly title="Koefisien b otomatis dari soal">
+                  </div>
+                  <div class="abc-input-card">
+                    <span>KONSTANTA c</span>
+                    <input type="number" step="any" id="abc-input-c" readonly title="Konstanta c otomatis dari soal">
+                  </div>
+                </div>
+                
+                <div class="input-target-indicator abc" style="margin-top: 8px;">✍️ ISI JAWABAN AKAR x₁ DAN x₂ HASIL RUMUS ABC:</div>
+              </div>
+
+              <div class="factor-inputs-row">
+                <span style="font-size: 0.9rem;">x₁ = </span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="abc-x1" data-dir="-1" title="Kurangi 1">-</button>
+                  <input type="number" step="any" id="abc-x1" class="math-input" placeholder="x₁" inputmode="decimal" title="Ketik nilai akar x₁ di sini">
+                  <button type="button" class="stepper-btn" data-target="abc-x1" data-dir="1" title="Tambah 1">+</button>
+                </div>
+                <span style="font-size: 0.9rem; margin-left: 6px;">x₂ = </span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="abc-x2" data-dir="-1" title="Kurangi 1">-</button>
+                  <input type="number" step="any" id="abc-x2" class="math-input" placeholder="x₂" inputmode="decimal" title="Ketik nilai akar x₂ di sini">
+                  <button type="button" class="stepper-btn" data-target="abc-x2" data-dir="1">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Vertex Workspace -->
+            <div id="workspace-vertex" class="solver-workspace">
+              <div class="step-box">
+                <div class="input-target-indicator info">🔒 NILAI DIKETAHUI DARI SOAL:</div>
+                <div class="abc-step-grid">
+                  <div class="abc-input-card">
+                    <span>KOEF a</span>
+                    <input type="number" step="any" id="vertex-input-a" readonly>
+                  </div>
+                  <div class="abc-input-card">
+                    <span>KOEF b</span>
+                    <input type="number" step="any" id="vertex-input-b" readonly>
+                  </div>
+                  <div class="abc-input-card">
+                    <span>KONSTANTA c</span>
+                    <input type="number" step="any" id="vertex-input-c" readonly>
+                  </div>
+                </div>
+
+                <div class="input-target-indicator vertex" style="margin-top: 8px;">✍️ ISI KOORDINAT PUNCAK x (SUMBU SIMETRI) & y (PUNCAK):</div>
+              </div>
+
+              <div class="factor-inputs-row">
+                <span style="font-size: 0.85rem;">x = </span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="vertex-x" data-dir="-1">-</button>
+                  <input type="number" step="any" id="vertex-x" class="math-input" placeholder="x_v" inputmode="decimal" title="Ketik nilai sumbu simetri x = -b/(2a)">
+                  <button type="button" class="stepper-btn" data-target="vertex-x" data-dir="1">+</button>
+                </div>
+                <span style="font-size: 0.85rem; margin-left: 6px;">y = </span>
+                <div class="stepper-input-wrap">
+                  <button type="button" class="stepper-btn" data-target="vertex-y" data-dir="-5">-</button>
+                  <input type="number" step="any" id="vertex-y" class="math-input" placeholder="y_v" inputmode="decimal" title="Ketik nilai optimum puncak y">
+                  <button type="button" class="stepper-btn" data-target="vertex-y" data-dir="5">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Virtual Quick Keypad Toggle -->
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="button" id="btn-toggle-keypad" style="background: transparent; border: none; color: var(--primary-cyan); font-size: 0.78rem; cursor: pointer; text-decoration: underline;">
+                ⌨️ Tampilkan Keypad Angka Sentuh
+              </button>
+            </div>
+
+            <!-- Virtual Keypad Panel (Collapsible) -->
+            <div class="virtual-keypad-panel" id="virtual-keypad" style="display: none;">
+              <button type="button" class="btn-keypad" data-key="1">1</button>
+              <button type="button" class="btn-keypad" data-key="2">2</button>
+              <button type="button" class="btn-keypad" data-key="3">3</button>
+              <button type="button" class="btn-keypad action" data-key="backspace">⌫</button>
+              <button type="button" class="btn-keypad" data-key="4">4</button>
+              <button type="button" class="btn-keypad" data-key="5">5</button>
+              <button type="button" class="btn-keypad" data-key="6">6</button>
+              <button type="button" class="btn-keypad" data-key="-">+/-</button>
+              <button type="button" class="btn-keypad" data-key="7">7</button>
+              <button type="button" class="btn-keypad" data-key="8">8</button>
+              <button type="button" class="btn-keypad" data-key="9">9</button>
+              <button type="button" class="btn-keypad" data-key=".">.</button>
+              <button type="button" class="btn-keypad" data-key="0" style="grid-column: span 2;">0</button>
+              <button type="button" class="btn-keypad action" data-key="clear">C</button>
+              <button type="button" class="btn-keypad ok" data-key="ok">OK</button>
+            </div>
+
+            <!-- Execution Action Area -->
+            <div class="solver-action-area">
+              <button class="btn-64 btn-64-primary btn-execute" id="btn-execute-solution" title="Kirim jawaban dan saksikan simulasi fisika di dunia game!">
+                <span>⚡</span> EKSEKUSI & SIMULASIKAN
+              </button>
+              
+              <!-- Multi-Method & Purpose Educational Button -->
+              <button class="btn-open-multi-method" id="btn-show-multi-method" title="Buka penjelasan mengapa rumus ini digunakan dan 3 cara penyelesaiannya">
+                <span>📘</span> TUJUAN RUMUS & 3 CARA PENYELESAIAN
+              </button>
+
+              <div class="hint-trigger" id="hint-link" title="Lihat langkah perhitungan ringkas">💡 Lihat Petunjuk Langkah Penyelesaian Singkat</div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 4: QUADRA CODEX (MATH ENCYCLOPEDIA)
+           ==================================================================== -->
+      <section id="screen-codex" class="game-screen">
+        <div class="codex-layout">
+          <div class="codex-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <button class="btn-nav-back" id="btn-codex-to-map">🗺️ Peta Dunia</button>
+              <button class="btn-nav-back" id="btn-codex-to-title">🏠 Menu Utama</button>
+            </div>
+            <h2>📖 QUADRA CODEX</h2>
+            <p>Panduan Konsep Matematika, Makna Fisik Parabola, dan Strategi Cepat Persamaan Kuadrat.</p>
+          </div>
+          <div class="codex-sections-grid" id="codex-articles-grid">
+            <!-- Populated dynamically by codex.js -->
+          </div>
+          <div style="text-align: center; margin-top: 15px;">
+            <button class="btn-64 btn-64-primary" id="btn-codex-bottom-map">
+              <span>🗺️</span> KEMBALI KE PETA DUNIA
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 5: QUADRATIC SANDBOX LAB
+           ==================================================================== -->
+      <section id="screen-sandbox" class="game-screen">
+        <div class="sandbox-layout">
+          <div class="sandbox-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <button class="btn-nav-back" id="btn-sandbox-to-map">🗺️ Peta Dunia</button>
+              <button class="btn-nav-back" id="btn-sandbox-to-title">🏠 Menu Utama</button>
+            </div>
+            <h2>🧪 LAB SANDBOX PERSAMAAN KUADRAT</h2>
+            <p>Ubah nilai koefisien a, b, dan c secara bebas untuk melihat perubahan grafik parabola dan simulasi fisikanya!</p>
+          </div>
+
+          <div class="sandbox-split">
+            <div class="sandbox-canvas-wrap">
+              <canvas id="sandbox-canvas"></canvas>
+            </div>
+
+            <div class="sandbox-controls-card">
+              <div class="sandbox-sim-theme-selector">
+                <button class="btn-theme-select active" data-theme="graph" title="Tampilkan grafik koordinat Kartesius X-Y">📈 Grafik</button>
+                <button class="btn-theme-select" data-theme="rocket" title="Simulasi penerbangan roket">🚀 Roket</button>
+                <button class="btn-theme-select" data-theme="sports" title="Simulasi lemparan bola basket">🏀 Bola</button>
+                <button class="btn-theme-select" data-theme="racing" title="Simulasi lompatan mobil balap">🏎️ Mobil</button>
+              </div>
+
+              <!-- Slider a -->
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Koefisien a (Kelengkungan):</span>
+                  <span class="slider-val" id="sandbox-val-a">1</span>
+                </div>
+                <input type="range" min="-5" max="5" step="0.2" value="1" class="slider-input" id="sandbox-slider-a">
+              </div>
+
+              <!-- Slider b -->
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Koefisien b (Pergeseran Sumbu):</span>
+                  <span class="slider-val" id="sandbox-val-b">-4</span>
+                </div>
+                <input type="range" min="-12" max="12" step="0.5" value="-4" class="slider-input" id="sandbox-slider-b">
+              </div>
+
+              <!-- Slider c -->
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Konstanta c (Titik Potong Y):</span>
+                  <span class="slider-val" id="sandbox-val-c">3</span>
+                </div>
+                <input type="range" min="-15" max="15" step="1" value="3" class="slider-input" id="sandbox-slider-c">
+              </div>
+
+              <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1);">
+
+              <!-- Real-time Properties Output -->
+              <div style="font-size: 0.88rem; display: flex; flex-direction: column; gap: 8px;">
+                <div><strong style="color: var(--primary-gold);">Diskriminan:</strong> <span id="sandbox-stat-d">D = 4</span></div>
+                <div><strong style="color: var(--primary-cyan);">Akar-akar (f(x)=0):</strong> <span id="sandbox-stat-roots">x₁ = 1, x₂ = 3</span></div>
+                <div><strong style="color: var(--primary-green);">Titik Puncak (Vertex):</strong> <span id="sandbox-stat-vertex">(2, -1)</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 10px;">
+            <button class="btn-64 btn-64-primary" id="btn-sandbox-bottom-map">
+              <span>🗺️</span> KEMBALI KE PETA DUNIA
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 1: MULTI-METHOD & PURPOSE DEEP DIVE MODAL
+       ======================================================================== -->
+  <div class="modal-backdrop" id="multi-method-modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header-banner">
+        <div class="modal-icon-big">📘</div>
+        <h3 class="modal-title" style="color: var(--primary-cyan);">TUJUAN RUMUS & MULTI-METODE</h3>
+      </div>
+      <div class="modal-body-content" id="multi-method-modal-body">
+        <!-- Injected dynamically by MathEngine.generateMultiMethodDeepDive -->
+      </div>
+      <div class="modal-actions">
+        <button class="btn-64 btn-64-primary" id="btn-close-multi-method">
+          <span>✔️</span> SAYA MENGERTI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: SIMULATION OUTCOME & REWARD FEEDBACK
+       ======================================================================== -->
+  <div class="modal-backdrop" id="outcome-modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header-banner">
+        <div class="modal-icon-big" id="modal-result-icon">🎉</div>
+        <h3 class="modal-title success" id="modal-result-title">MISI SELESAI DENGAN SUKSES!</h3>
+      </div>
+      <div class="modal-body-content" id="modal-result-body">
+        <!-- Dynamic Result & Concept Explanation -->
+      </div>
+      <div class="modal-actions" id="outcome-modal-actions">
+        <button class="btn-64 btn-64-primary" id="btn-modal-next">
+          <span>➡️</span> LEVEL SELANJUTNYA
+        </button>
+        <button class="btn-64 btn-64-gold" id="btn-modal-view-multi-method" style="display: none;">
+          <span>📘</span> BEDAH 3 CARA LAINNYA
+        </button>
+        <button class="btn-64 btn-64-secondary" id="btn-modal-retry" style="display: none;">
+          <span>🔄</span> COBA LAGI DENGAN CARA LAIN
+        </button>
+        <button class="btn-64 btn-64-gold" id="btn-modal-autofill-solution" style="display: none;">
+          <span>💡</span> BERI JAWABAN BENAR & PEMBAHASAN
+        </button>
+        <button class="btn-64 btn-64-primary" id="btn-modal-apply-and-sim" style="display: none;">
+          <span>🛠️</span> TERAPKAN KE FORM & JALANKAN SIMULASI
+        </button>
+        <button class="btn-64 btn-64-secondary" id="btn-modal-try-myself" style="display: none;">
+          <span>✍️</span> SAYA INGIN COBA KETIK SENDIRI
+        </button>
+        <button class="btn-64 btn-64-ghost" id="btn-modal-map">
+          <span>🗺️</span> PETA DUNIA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/audio.js"></script>
+  <script src="js/math_engine.js"></script>
+  <script src="js/game_data.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/solver_ui.js"></script>
+  <script src="js/codex.js"></script>
+  <script src="js/sandbox.js"></script>
+  <script src="js/game.js"></script>
+
+</body>
+</html>
