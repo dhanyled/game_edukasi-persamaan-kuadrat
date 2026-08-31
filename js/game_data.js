@@ -320,11 +320,15 @@ class QuestManager {
   /**
    * Generate an endless procedural quest
    */
-  static generateRandomProceduralQuest() {
+  static generateRandomProceduralQuest(challengeIndex = 1) {
     const randomLevelId = Math.floor(Math.random() * BASE_LEVEL_TEMPLATES.length) + 1;
     const instance = this.createLevelInstance(randomLevelId);
     instance.id = 999;
-    instance.subtitle = 'Tantangan Acak Dinamis';
+    instance.isQuickChallenge = true;
+    instance.challengeIndex = challengeIndex;
+    instance.subtitle = `⚡ Tantangan Cepat #${challengeIndex}`;
+    instance.mission.title = `⚡ Tantangan Cepat #${challengeIndex}: ${instance.name}`;
+    instance.npc.intro = `⚡ Mode Tantangan Cepat #${challengeIndex} aktif! Pecahkan persamaan ${instance.name} secepat mungkin untuk meraih rekor kombo streak tertinggi!`;
     return instance;
   }
 }

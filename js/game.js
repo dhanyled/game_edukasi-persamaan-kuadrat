@@ -157,7 +157,9 @@ class QuadraGame {
     const endlessBtn = document.getElementById('btn-endless-challenge') || document.getElementById('btn-play-quick');
     if (endlessBtn) {
       endlessBtn.addEventListener('click', () => {
-        const proceduralQuest = QuestManager.generateRandomProceduralQuest();
+        this.quickChallengeStreak = 0;
+        this.quickChallengeIndex = 1;
+        const proceduralQuest = QuestManager.generateRandomProceduralQuest(this.quickChallengeIndex);
         this.startLevelDirectly(proceduralQuest);
       });
     }
@@ -256,6 +258,13 @@ class QuadraGame {
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
         this.closeModal();
+        if (this.currentLevel && this.currentLevel.isQuickChallenge) {
+          this.quickChallengeIndex = (this.quickChallengeIndex || 1) + 1;
+          const nextQuest = QuestManager.generateRandomProceduralQuest(this.quickChallengeIndex);
+          this.startLevelDirectly(nextQuest);
+          this.showToast(`⚡ Tantangan #${this.quickChallengeIndex} Dimulai!`);
+          return;
+        }
         const nextLevelId = this.currentLevelId + 1;
         if (nextLevelId <= (window.BASE_LEVEL_TEMPLATES || []).length) {
           this.loadLevelById(nextLevelId);
@@ -385,8 +394,12 @@ class QuadraGame {
     const target = document.getElementById(`screen-${screenId}`);
     if (target) target.classList.add('active');
 
-    if (this.renderer) this.renderer.setActiveScreen(screenId === 'game');
-    if (this.sandbox) this.sandbox.setActiveScreen(screenId === 'sandbox');
+    if (this.renderer && typeof this.renderer.setActiveScreen === 'function') {
+      this.renderer.setActiveScreen(screenId === 'game');
+    }
+    if (this.sandbox && typeof this.sandbox.setActiveScreen === 'function') {
+      this.sandbox.setActiveScreen(screenId === 'sandbox');
+    }
 
     if (screenId === 'game') {
       this.setMobileViewMode('solve');
@@ -486,6 +499,20 @@ class QuadraGame {
   startLevelDirectly(level) {
     this.currentLevel = level;
     this.switchScreen('game');
+
+    // Update Quick Challenge Banner if in quick challenge mode
+    const bannerEl = document.getElementById('challenge-active-banner');
+    const bannerTitleEl = document.getElementById('challenge-banner-title');
+    const streakCountEl = document.getElementById('challenge-streak-count');
+    if (bannerEl) {
+      if (level.isQuickChallenge) {
+        bannerEl.style.display = 'flex';
+        if (bannerTitleEl) bannerTitleEl.innerText = level.subtitle || '⚡ TANTANGAN CEPAT';
+        if (streakCountEl) streakCountEl.innerText = Math.max(1, this.quickChallengeStreak || 1);
+      } else {
+        bannerEl.style.display = 'none';
+      }
+    }
 
     // Update World Info in Canvas HUD
     const worldTitleEl = document.getElementById('env-world-title');
@@ -630,12 +657,24 @@ class QuadraGame {
         `;
       }
 
-      if (nextBtn) nextBtn.style.display = 'inline-flex';
+      if (nextBtn) {
+        nextBtn.style.display = 'inline-flex';
+        nextBtn.innerHTML = level.isQuickChallenge ? '<span>⚡</span> TANTANGAN BERIKUTNYA' : '<span>➡️</span> LEVEL SELANJUTNYA';
+      }
       const modalMultiMethodBtn = document.getElementById('btn-modal-view-multi-method');
       if (modalMultiMethodBtn) modalMultiMethodBtn.style.display = 'inline-flex';
-      if (retryBtn) retryBtn.style.display = 'inline-flex';
+      if (retryBtn) {
+        retryBtn.style.display = 'inline-flex';
+        retryBtn.innerHTML = level.isQuickChallenge ? '<span>🔄</span> COBA TANTANGAN LAGI' : '<span>🔄</span> COBA LAGI DENGAN CARA LAIN';
+      }
       if (autofillBtn) autofillBtn.style.display = 'none';
+      if (level.isQuickChallenge) {
+        this.quickChallengeStreak = (this.quickChallengeStreak || 0) + 1;
+      }
     } else {
+      if (level.isQuickChallenge) {
+        this.quickChallengeStreak = 0;
+      }
       if (window.soundEngine) window.soundEngine.playWrong();
 
       if (iconEl) iconEl.innerText = '💥';
@@ -666,7 +705,10 @@ class QuadraGame {
       if (nextBtn) nextBtn.style.display = 'none';
       const modalMultiMethodBtn = document.getElementById('btn-modal-view-multi-method');
       if (modalMultiMethodBtn) modalMultiMethodBtn.style.display = 'none';
-      if (retryBtn) retryBtn.style.display = 'inline-flex';
+      if (retryBtn) {
+        retryBtn.style.display = 'inline-flex';
+        retryBtn.innerHTML = level.isQuickChallenge ? '<span>🔄</span> COBA TANTANGAN LAGI' : '<span>🔄</span> COBA LAGI DENGAN CARA LAIN';
+      }
       if (autofillBtn) autofillBtn.style.display = 'inline-flex';
     }
 

@@ -455,6 +455,60 @@
   gap: clamp(10px, 1.5vw, 16px);
 }
 
+/* Mode Tantangan Cepat Glowing Banner */
+.challenge-active-banner {
+  background: linear-gradient(135deg, rgba(255, 0, 119, 0.25), rgba(255, 190, 11, 0.2));
+  border: 2px solid var(--primary-pink);
+  box-shadow: 0 0 15px rgba(255, 0, 119, 0.35);
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  animation: pulseChallenge 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseChallenge {
+  from { border-color: var(--primary-pink); box-shadow: 0 0 10px rgba(255, 0, 119, 0.3); }
+  to { border-color: var(--primary-gold); box-shadow: 0 0 18px rgba(255, 190, 11, 0.5); }
+}
+
+.challenge-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.challenge-flash-icon {
+  font-size: 1.4rem;
+}
+
+.challenge-banner-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--primary-gold);
+  letter-spacing: 0.5px;
+}
+
+.challenge-banner-sub {
+  font-size: 0.72rem;
+  color: #f1f5f9;
+}
+
+.challenge-streak-badge {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--primary-gold);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--primary-gold);
+  white-space: nowrap;
+}
+
 /* Mission Card */
 .mission-card {
   background: linear-gradient(135deg, rgba(20, 32, 64, 0.9), rgba(12, 18, 38, 0.9));
