@@ -363,7 +363,9 @@ class QuadraGame {
     }
 
     if (this.renderer) {
-      setTimeout(() => this.renderer.resize(), 60);
+      this.renderer.resize();
+      setTimeout(() => this.renderer.resize(), 50);
+      setTimeout(() => this.renderer.resize(), 150);
     }
   }
 
