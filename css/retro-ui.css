@@ -244,33 +244,33 @@
 
 #screen-game.active {
   display: flex !important;
-  flex-direction: row;
 }
 
 #screen-game:not(.active) {
   display: none !important;
 }
 
-/* Mobile View Tabs */
+/* Mobile View Tabs (Papan Hitung vs Arena Simulasi) */
 .mobile-view-tabs {
   display: none;
   background: #080d1d;
   border-bottom: 2px solid var(--border-cyan);
-  padding: 4px 8px;
+  padding: 6px 8px;
   gap: 8px;
   z-index: 50;
   flex-shrink: 0;
+  width: 100%;
 }
 
-.btn-mobile-view-tab {
+.btn-mobile-tab, .btn-mobile-view-tab {
   flex: 1;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #cbd5e1;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.85rem;
-  padding: 8px 12px;
+  font-size: clamp(0.72rem, 2.5vw, 0.84rem);
+  padding: 8px 6px;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -278,13 +278,14 @@
   justify-content: center;
   gap: 6px;
   min-height: 40px;
+  transition: all 0.2s ease;
 }
 
-.btn-mobile-view-tab.active {
+.btn-mobile-tab.active, .btn-mobile-view-tab.active {
   background: var(--primary-cyan);
   color: #000;
   border-color: var(--primary-cyan);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
 }
 
 /* Left: Simulation Canvas (Desktop 58%) */
@@ -628,91 +629,7 @@
   font-weight: 600;
 }
 
-.btn-r-science {
-  background: rgba(6, 214, 160, 0.15);
-  border: 1px solid var(--primary-green);
-  color: var(--primary-green);
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s ease;
-}
 
-.btn-r-science:hover, .btn-r-science:active {
-  background: var(--primary-green);
-  color: #000;
-  box-shadow: 0 0 10px rgba(6, 214, 160, 0.5);
-  transform: translateY(-1px);
-}
-
-/* R Data Science Modal Layout */
-.r-science-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-@media (max-width: 768px) {
-  .r-science-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.r-code-box, .r-terminal-box {
-  background: #060a14;
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  border-radius: 8px;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.r-box-title {
-  font-family: var(--font-retro);
-  font-size: 0.62rem;
-  color: var(--primary-cyan);
-  letter-spacing: 0.5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.r-script-pre {
-  margin: 0;
-  font-family: 'Consolas', 'Fira Code', monospace;
-  font-size: 0.74rem;
-  line-height: 1.45;
-  color: #a5f3fc;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 8px;
-  border-radius: 6px;
-  max-height: 280px;
-  overflow-y: auto;
-  white-space: pre-wrap;
-}
-
-.r-output-terminal {
-  margin: 0;
-  font-family: 'Consolas', 'Courier New', monospace;
-  font-size: 0.72rem;
-  line-height: 1.4;
-  color: #38ef7d;
-  background: #020408;
-  padding: 8px;
-  border-radius: 6px;
-  border-left: 3px solid #38ef7d;
-  max-height: 280px;
-  overflow-y: auto;
-  white-space: pre;
-}
 
 /* Equation Scanner Widget */
 .scanner-widget {
@@ -1472,38 +1389,268 @@
 
 @media (max-width: 860px) {
   .mobile-view-tabs {
-    display: flex;
+    display: flex !important;
   }
 
-  #screen-game {
-    flex-direction: column;
+  #screen-game.active {
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
 
-  #screen-game.mobile-view-sim .game-viewport {
-    display: flex;
-    flex: 1;
-    height: 100%;
+  /* Default or Solve mode: show solver panel full width/height */
+  #screen-game.active .game-viewport {
+    display: none !important;
   }
-  #screen-game.mobile-view-sim .game-solver-panel {
-    display: none;
-  }
-
-  #screen-game.mobile-view-solve .game-viewport {
-    display: none;
-  }
-  #screen-game.mobile-view-solve .game-solver-panel {
-    display: flex;
-    flex: 1;
-    height: 100%;
-    border-left: none;
+  #screen-game.active .game-solver-panel {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    border-left: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
+  /* Sim mode: show simulation arena full width/height */
+  #screen-game.active.mobile-view-sim .game-viewport {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+  #screen-game.active.mobile-view-sim .game-solver-panel {
+    display: none !important;
+  }
+
+  /* Mobile Canvas Overlay Adjustments */
+  .canvas-overlay-ui {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .env-status-card {
+    padding: 6px 10px;
+  }
+
+  .env-world-name {
+    font-size: 0.88rem;
+  }
+
+  .env-mission-snippet {
+    font-size: 0.72rem;
+  }
+
+  .sim-controls {
+    gap: 4px;
+  }
+
+  .btn-sim-control {
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    min-height: 32px;
+  }
+
+  .canvas-hud-bottom {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .dialogue-box {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .dialogue-avatar {
+    min-width: 32px;
+    height: 32px;
+    font-size: 1.4rem;
+  }
+
+  .dialogue-content h4 {
+    font-size: 0.82rem;
+  }
+
+  .dialogue-content p {
+    font-size: 0.76rem;
+    line-height: 1.3;
+  }
+
+  /* Solver Panel Mobile Adjustments */
+  .solver-inner {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .mission-card {
+    padding: 8px 10px;
+  }
+
+  .mission-title {
+    font-size: 0.95rem;
+  }
+
+  .mission-desc {
+    font-size: 0.8rem;
+  }
+
+  .equation-display-box {
+    padding: 8px;
+  }
+
+  .equation-formula {
+    font-size: clamp(1.2rem, 4.5vw, 1.45rem);
+  }
+
+  .telemetry-widget {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .telemetry-title {
+    font-size: 0.72rem;
+  }
+
+  .telemetry-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .tel-label {
+    font-size: 0.68rem;
+  }
+
+  .tel-val {
+    font-size: 0.78rem;
+  }
+
+  .strategy-picker-section h4 {
+    font-size: 0.82rem;
+  }
+
+  .strategy-tabs {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+  }
+
+  .btn-strategy-tab {
+    padding: 6px 2px;
+    font-size: 0.7rem;
+    min-height: 38px;
+  }
+
+  .btn-strategy-tab .tab-icon {
+    font-size: 0.9rem;
+  }
+
+  .stepper-input-wrap {
+    border-width: 1.5px;
+  }
+
+  .stepper-btn {
+    width: 32px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .math-input {
+    width: 48px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .virtual-keypad-panel {
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .btn-keypad {
+    height: 34px;
+    font-size: 0.95rem;
+  }
+
+  .btn-execute {
+    padding: 11px;
+    font-size: 0.95rem;
+  }
+
+  .btn-open-multi-method {
+    padding: 8px;
+    font-size: 0.78rem;
+  }
+
+  /* Sandbox Mobile */
   .sandbox-split {
     grid-template-columns: 1fr;
     height: auto;
+    overflow-y: auto;
   }
   .sandbox-canvas-wrap {
-    height: 280px;
+    height: 240px;
+    min-height: 240px;
+  }
+
+  /* Map Screen Mobile */
+  .map-header {
+    padding: 12px 10px;
+    gap: 6px;
+    text-align: center;
+  }
+  .map-title {
+    font-size: 1.25rem;
+  }
+  .map-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  /* Codex Screen Mobile */
+  .codex-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: auto;
+  }
+  .codex-sidebar {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px;
+    gap: 6px;
+    border-right: none;
+    border-bottom: 2px solid var(--border-cyan);
+  }
+  .btn-codex-topic {
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+
+  /* Modals Mobile */
+  .modal-box {
+    width: 95%;
+    max-height: 90vh;
+    padding: 14px 10px;
+  }
+  .modal-title {
+    font-size: 1rem;
+  }
+  .modal-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .modal-actions .btn-64 {
+    width: 100%;
+    min-height: 40px;
+    font-size: 0.82rem;
+    justify-content: center;
   }
 }
 
@@ -1513,13 +1660,13 @@
     max-height: 42px;
   }
   .mobile-view-tabs {
-    display: none;
+    display: none !important;
   }
-  #screen-game {
-    flex-direction: row;
+  #screen-game.active {
+    flex-direction: row !important;
   }
-  #screen-game.mobile-view-solve .game-viewport,
-  #screen-game.mobile-view-sim .game-solver-panel {
+  #screen-game.active .game-viewport,
+  #screen-game.active .game-solver-panel {
     display: flex !important;
   }
   .game-viewport {

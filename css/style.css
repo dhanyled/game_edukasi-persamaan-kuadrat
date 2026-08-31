@@ -122,6 +122,55 @@ header#top-bar {
   flex-shrink: 0;
 }
 
+@media (max-width: 600px) {
+  header#top-bar {
+    min-height: 44px;
+    max-height: 48px;
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .logo-badge {
+    gap: 4px;
+  }
+  .logo-icon {
+    font-size: 18px;
+  }
+  .logo-text {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
+  .logo-sub {
+    display: none;
+  }
+  .header-status-group {
+    gap: 4px;
+  }
+  .stat-pill {
+    padding: 2px 6px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+  .header-controls {
+    gap: 3px;
+  }
+  .btn-icon-top {
+    min-width: 30px;
+    height: 30px;
+    font-size: 0.82rem;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .header-status-group .stat-pill:last-child {
+    display: none;
+  }
+  .btn-icon-top:nth-child(5),
+  .btn-icon-top:nth-child(6) {
+    display: none;
+  }
+}
+
 .logo-badge {
   display: flex;
   align-items: center;
